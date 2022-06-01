@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Мария Ануфриева](https://up.htmlacademy.ru/javascript/26/user/2083329).
-* Наставник: `Неизвестно`.
+* Наставник: [Анастасия Васинская](https://htmlacademy.ru/profile/vanastasiya).
 
 ---
 
