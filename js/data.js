@@ -29,32 +29,37 @@ const NAMES_OF_COMMENTATORS = [
   'Злата',
   'Ярослава'
 ];
-const commentIds = [];
 
-const getUniqueCommentId = () => {
-  let commentId;
-  do {
-    commentId = getRandomInteger(1, 1000);
-  } while (commentIds.includes(commentId));
-  commentIds.push(commentId);
-  return commentId;
+const createCommentIdGenerator = (min, max) => {
+  const commentIds = [];
+  return () => {
+    let commentId;
+    do {
+      commentId = getRandomInteger(min, max);
+    }
+    while (commentIds.includes(commentId));
+    commentIds.push(commentId);
+    return commentId;
+  };
 };
 
+const getCommentId = createCommentIdGenerator(1, 1000);
+
 const createComment = () => ({
-  id: getUniqueCommentId(),
+  id: getCommentId(),
   avatar: `img/avatar-${getRandomInteger(Avatar.MIN, Avatar.MAX)}.svg`,
   message: getRandomArrayElement(MESSAGES),
   name: getRandomArrayElement(NAMES_OF_COMMENTATORS),
 });
 
-const createPhoto = (indexPhoto) => ({
-  id: indexPhoto,
-  url: `photos/${indexPhoto}.jpg`,
-  description: `Описание фото №${indexPhoto}`,
+const createPhoto = (id) => ({
+  id,
+  url: `photos/${id}.jpg`,
+  description: `Описание фото №${id}`,
   likes: getRandomInteger(Like.MIN, Like.MAX),
   comments: Array.from({ length: getRandomInteger(Comment.MIN, Comment.MAX) }, createComment),
 });
 
-const createPhotos = () => Array.from({ length: PHOTO_COUNT }, (item, indexPhoto) => createPhoto(indexPhoto + 1));
+const createPhotos = () => Array.from({ length: PHOTO_COUNT }, (item, index) => createPhoto(index + 1));
 
 export { createPhotos };
