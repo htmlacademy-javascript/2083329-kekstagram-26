@@ -1,9 +1,5 @@
 import { createPhotos } from './data.js';
-import { renderPicture } from './pictures.js';
-import { renderFullSizePicture } from './fullsize-pictures.js';
+import { renderThumbanails } from './thumbnails.js';
+import './upload-form.js';
 
-const photos = createPhotos();
-renderPicture(photos);
-renderFullSizePicture(photos);
-
-
+renderThumbanails(createPhotos());
