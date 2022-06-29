@@ -3,6 +3,9 @@ import { isEscapeKey } from './util.js';
 const COUNT_ADDED_COMMENTS = 5;
 const body = document.querySelector('body');
 const photoContainerNode = document.querySelector('.big-picture');
+const photoImgNode = photoContainerNode.querySelector('.big-picture__img img');
+const photoLikesNode = photoContainerNode.querySelector('.likes-count');
+const photoDescriptionNode = photoContainerNode.querySelector('.social__caption');
 const cancelPhotoButtonNode = photoContainerNode.querySelector('#picture-cancel');
 const commentsCountNode = photoContainerNode.querySelector('.social__comment-count');
 const commentsLoaderButtonNode = photoContainerNode.querySelector('.social__comments-loader');
@@ -59,9 +62,9 @@ const renderFullSizePhoto = ({ url, likes, description, comments }) => {
   photoContainerNode.classList.remove('hidden');
   body.classList.add('modal-open');
 
-  photoContainerNode.querySelector('.big-picture__img img').src = url;
-  photoContainerNode.querySelector('.likes-count').textContent = likes;
-  photoContainerNode.querySelector('.social__caption').textContent = description;
+  photoImgNode.src = url;
+  photoLikesNode.textContent = likes;
+  photoDescriptionNode.textContent = description;
 
   renderComments(comments, countClickLoadComments);
   commentsLoaderButtonNode.addEventListener('click', () => {
