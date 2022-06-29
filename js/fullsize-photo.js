@@ -17,11 +17,11 @@ const commentItemNode = photoContainerNode.querySelector('.social__comment');
 const onPhotoEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    onPhotoContainerCancel();
+    photoContainerCancel();
   }
 };
-cancelPhotoButtonNode.addEventListener('click', onPhotoContainerCancel);
-function onPhotoContainerCancel() {
+cancelPhotoButtonNode.addEventListener('click', photoContainerCancel);
+function photoContainerCancel() {
   photoContainerNode.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onPhotoEscKeydown);
