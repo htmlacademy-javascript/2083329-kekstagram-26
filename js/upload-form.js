@@ -2,71 +2,78 @@ import { isEscapeKey } from './util.js';
 
 const MAX_COUNT_HASHTAGS = 5;
 const body = document.querySelector('body');
-const uploadPhotoForm = document.querySelector('#upload-select-image');
-const uploadPhotoFile = document.querySelector('#upload-file');
-const photoEditContainer = document.querySelector('.img-upload__overlay');
-const cancelPhotoButton = photoEditContainer.querySelector('#upload-cancel');
-const hashtagsText = uploadPhotoForm.querySelector('.text__hashtags');
-const commentText = uploadPhotoForm.querySelector('.text__description');
+const uploadPhotoFormNode = document.querySelector('#upload-select-image');
+const uploadPhotoFileNode = document.querySelector('#upload-file');
+const photoEditContainerNode = document.querySelector('.img-upload__overlay');
+const cancelPhotoButtonNode = photoEditContainerNode.querySelector('#upload-cancel');
+const inputHashtagNode = uploadPhotoFormNode.querySelector('.text__hashtags');
+const inputCommentNode = uploadPhotoFormNode.querySelector('.text__description');
 
 // закрытие формы редактирования изображения
 const onPhotoEscKeydown = (evt) => {
-  if (isEscapeKey(evt)
-    && document.activeElement !== hashtagsText
-    && document.activeElement !== commentText) {
+  if (isEscapeKey(evt)) {
     evt.preventDefault();
-    cancelPhotoContainer();
+    cancelPhotoEditContainer();
   }
 };
 
-function cancelPhotoContainer() {
-  photoEditContainer.classList.add('hidden');
+function cancelPhotoEditContainer() {
+  photoEditContainerNode.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onPhotoEscKeydown);
-  uploadPhotoFile.value = '';
-  hashtagsText.value = '';
-  commentText.value = '';
+  uploadPhotoFormNode.reset();
 }
-cancelPhotoButton.addEventListener('click', cancelPhotoContainer);
+cancelPhotoButtonNode.addEventListener('click', () => cancelPhotoEditContainer());
+
+// предотвращение закрытия формы при фокусе на полях ввода
+const onFocusInputEscKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.stopPropagation();
+  }
+};
+inputHashtagNode.addEventListener('keydown', onFocusInputEscKeydown);
+inputCommentNode.addEventListener('keydown', onFocusInputEscKeydown);
 
 // открытие формы редактирования изображения
 const onUploadFileChange = () => {
-  photoEditContainer.classList.remove('hidden');
+  photoEditContainerNode.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onPhotoEscKeydown);
 };
-uploadPhotoFile.addEventListener('change', onUploadFileChange);
+uploadPhotoFileNode.addEventListener('change', onUploadFileChange);
 
 // валидация и отправка формы
-const pristine = new Pristine(uploadPhotoForm, {
+const pristine = new Pristine(uploadPhotoFormNode, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
 });
 
-const validateHashtagsText = (text) => {
-  if (text === '') {
-    return true;
-  }
-  const arrayHashtags = text.trim().toLowerCase().split(' ');
-  if (arrayHashtags.length > MAX_COUNT_HASHTAGS) {
-    return false;
-  }
-  if (new Set(arrayHashtags).size !== arrayHashtags.length) {
-    return false;
-  }
-  return arrayHashtags.every((hashtag) => /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/.test(hashtag));
+const getArrayHashtags = (value) => (value.trim().toLowerCase().split(' '));
+
+const validateHashtags = (value) => {
+  const arrayHashtags = getArrayHashtags(value);
+  const re = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
+  return value === ''|| arrayHashtags.every((hashtag) => re.test(hashtag));
 };
 
-pristine.addValidator(
-  hashtagsText,
-  validateHashtagsText,
-  'Некорректно введены хэштеги'
-);
+const validateUniqueHashtags = (value) => {
+  const arrayHashtags = getArrayHashtags(value);
+  return new Set(arrayHashtags).size === arrayHashtags.length;
+};
 
-uploadPhotoForm.addEventListener('submit', (evt) => {
+const validateCountHashtags = (value) => {
+  const arrayHashtags = getArrayHashtags(value);
+  return arrayHashtags.length <= MAX_COUNT_HASHTAGS;
+};
+
+pristine.addValidator(inputHashtagNode, validateHashtags, 'Некорректно введен хэш-тег');
+pristine.addValidator(inputHashtagNode, validateUniqueHashtags, 'Хэш-теги не должны повторяться');
+pristine.addValidator(inputHashtagNode, validateCountHashtags, `Число хэш-тегов не должно превышать ${MAX_COUNT_HASHTAGS}`);
+
+uploadPhotoFormNode.addEventListener('submit', (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
-    uploadPhotoForm.submit();
+    uploadPhotoFormNode.submit();
   }
 });
 
