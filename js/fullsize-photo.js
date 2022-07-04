@@ -6,9 +6,9 @@ const photoContainerNode = document.querySelector('.big-picture');
 const photoImgNode = photoContainerNode.querySelector('.big-picture__img img');
 const photoLikesNode = photoContainerNode.querySelector('.likes-count');
 const photoDescriptionNode = photoContainerNode.querySelector('.social__caption');
-const cancelPhotoButtonNode = photoContainerNode.querySelector('#picture-cancel');
+const cancelPhotoButton = photoContainerNode.querySelector('#picture-cancel');
 const commentsCountNode = photoContainerNode.querySelector('.social__comment-count');
-const commentsLoaderButtonNode = photoContainerNode.querySelector('.social__comments-loader');
+const commentsLoaderButton = photoContainerNode.querySelector('.social__comments-loader');
 const commentsContainerNode = photoContainerNode.querySelector('.social__comments');
 const commentsFragmentNode = document.createDocumentFragment();
 const commentItemNode = photoContainerNode.querySelector('.social__comment');
@@ -20,7 +20,7 @@ const onPhotoEscKeydown = (evt) => {
     onCancelPhotoButtonClick();
   }
 };
-cancelPhotoButtonNode.addEventListener('click', onCancelPhotoButtonClick);
+cancelPhotoButton.addEventListener('click', onCancelPhotoButtonClick);
 function onCancelPhotoButtonClick() {
   photoContainerNode.classList.add('hidden');
   body.classList.remove('modal-open');
@@ -43,9 +43,9 @@ const renderComments = (comments, countClickLoadComments) => {
   const countLoadComments = countClickLoadComments * COUNT_ADDED_COMMENTS;
   const countCommentsTotal = comments.length;
   if (countCommentsTotal <= countLoadComments) {
-    commentsLoaderButtonNode.classList.add('hidden');
+    commentsLoaderButton.classList.add('hidden');
   } else {
-    commentsLoaderButtonNode.classList.remove('hidden');
+    commentsLoaderButton.classList.remove('hidden');
   }
   for (let i = 0; i < (countCommentsTotal <= countLoadComments ? countCommentsTotal : countLoadComments); i++) {
     renderComment(comments[i]);
@@ -67,7 +67,7 @@ const renderFullSizePhoto = ({ url, likes, description, comments }) => {
   photoDescriptionNode.textContent = description;
 
   renderComments(comments, countClickLoadComments);
-  commentsLoaderButtonNode.addEventListener('click', () => {
+  commentsLoaderButton.addEventListener('click', () => {
     countClickLoadComments++;
     renderComments(comments, countClickLoadComments);
   });
