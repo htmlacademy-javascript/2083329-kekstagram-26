@@ -1,5 +1,7 @@
-import { createPhotos } from './data.js';
+import { getData } from './api.js';
 import { renderThumbanails } from './thumbnails.js';
-import './upload-form.js';
+import { setUploadFormSubmit } from './upload-form.js';
+import { showError } from './util.js';
 
-renderThumbanails(createPhotos());
+getData(renderThumbanails, showError);
+setUploadFormSubmit();
