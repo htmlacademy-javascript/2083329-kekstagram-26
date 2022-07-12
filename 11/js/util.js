@@ -1,4 +1,4 @@
-const ERROR_SHOW_TIME = 2000;
+const ERROR_SHOW_TIME = 3000;
 
 const getRandomInteger = (min, max) => {
   const minNumber = Math.min(Math.abs(min), Math.abs(max));
