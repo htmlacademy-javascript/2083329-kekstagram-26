@@ -1,6 +1,12 @@
+const URL = 'https://26.javascript.pages.academy/kekstagram';
 const getData = (onSuccess, onFail) => {
-  fetch('https://26.javascript.pages.academy/kekstagram/data')
-    .then((response) => response.json())
+  fetch(`${URL}/data`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Не удалось загрузить фотографии');
+      }
+      return response.json();
+    })
     .then((photos) => {
       onSuccess(photos);
     })
@@ -11,18 +17,17 @@ const getData = (onSuccess, onFail) => {
 
 const sendData = (onSuccess, onFail, body) => {
   fetch(
-    'https://26.javascript.pages.academy/kekstagram',
+    URL,
     {
       method: 'POST',
       body,
     },
   )
     .then((response) => {
-      if (response.ok) {
-        onSuccess();
-      } else {
-        onFail();
+      if (!response.ok) {
+        throw new Error('Не удалось опубликовать фотографию');
       }
+      onSuccess();
     })
     .catch(() => {
       onFail();

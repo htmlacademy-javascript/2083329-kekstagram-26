@@ -8,7 +8,7 @@ const body = document.querySelector('body');
 const uploadPhotoFormNode = document.querySelector('#upload-select-image');
 const uploadPhotoFileNode = document.querySelector('#upload-file');
 const photoEditContainerNode = document.querySelector('.img-upload__overlay');
-const cancelPhotoButton = photoEditContainerNode.querySelector('#upload-cancel');
+const cancelPhotoButtonNode = photoEditContainerNode.querySelector('#upload-cancel');
 const inputCommentNode = uploadPhotoFormNode.querySelector('.text__description');
 const inputHashtagNode = uploadPhotoFormNode.querySelector('.text__hashtags');
 const successContainerNode = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
@@ -31,7 +31,7 @@ function cancelPhotoEditContainer() {
   document.removeEventListener('keydown', onPhotoEditContainerEscKeydown);
   uploadPhotoFormNode.reset();
 }
-cancelPhotoButton.addEventListener('click', () => cancelPhotoEditContainer());
+cancelPhotoButtonNode.addEventListener('click', () => cancelPhotoEditContainer());
 
 // предотвращение закрытия формы при фокусе на полях ввода
 const onFocusInputEscKeydown = (evt) => {
@@ -73,7 +73,7 @@ const onSuccessContainerEscKeydown = (evt) => {
 };
 
 const onDocumentExceptSuccessContainerClick = (evt) => {
-  if (!evt.composedPath().includes(successContainerNode.querySelector('.success__inner'))) {
+  if (evt.target === successContainerNode) {
     cancelSuccessMessage();
   }
 };
@@ -94,11 +94,6 @@ const showSuccessMessage = () => {
   document.addEventListener('click', onDocumentExceptSuccessContainerClick);
 };
 
-const onSuccessSendForm = () => {
-  cancelPhotoEditContainer();
-  showSuccessMessage();
-  unblockSubmitButton();
-};
 
 // обработчики закрытия окна об ошибке при отправке формы
 const onErrorContainerEscKeydown = (evt) => {
@@ -109,7 +104,7 @@ const onErrorContainerEscKeydown = (evt) => {
 };
 
 const onDocumentExceptErrorContainerClick = (evt) => {
-  if (!evt.composedPath().includes(errorContainerNode.querySelector('.error__inner'))) {
+  if (evt.target === errorContainerNode) {
     cancelErrorMessage();
   }
 };
@@ -128,6 +123,12 @@ const showErrorMessage = () => {
   body.append(errorContainerNode);
   document.addEventListener('keydown', onErrorContainerEscKeydown);
   document.addEventListener('click', onDocumentExceptErrorContainerClick);
+};
+
+const onSuccessSendForm = () => {
+  cancelPhotoEditContainer();
+  showSuccessMessage();
+  unblockSubmitButton();
 };
 
 const onFailSendForm = () => {
