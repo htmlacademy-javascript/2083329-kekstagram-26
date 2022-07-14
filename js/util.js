@@ -12,7 +12,7 @@ const checkMaxLengthString = (string, maxLength) => string.length <= maxLength;
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-const showError = () => {
+const showAlert = () => {
   const errorSectionNode = document.createElement('section');
   errorSectionNode.className = 'error';
   errorSectionNode.insertAdjacentHTML('afterbegin',
@@ -23,4 +23,20 @@ const showError = () => {
   }, ERROR_SHOW_TIME);
 };
 
-export { getRandomInteger, getRandomArrayElement, isEscapeKey, checkMaxLengthString, showError };
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = getRandomInteger(0, i);
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
+
+const debounce = (callback, timeoutDelay = 500) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export { getRandomInteger, getRandomArrayElement, isEscapeKey, checkMaxLengthString, showAlert, shuffleArray, debounce };
