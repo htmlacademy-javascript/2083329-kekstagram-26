@@ -1,7 +1,11 @@
 import { getData } from './api.js';
 import { renderThumbanails } from './thumbnails.js';
-import { setUploadFormSubmit } from './upload-form.js';
-import { showError } from './util.js';
+import { setUploadFormSubmit } from './submit-form.js';
+import { initFilters} from './filters.js';
 
-getData(renderThumbanails, showError);
+getData((photos) => {
+  renderThumbanails(photos);
+  initFilters(photos);
+});
+
 setUploadFormSubmit();
