@@ -1,10 +1,11 @@
+import { showAlert } from './util.js';
 const URL = 'https://26.javascript.pages.academy/kekstagram';
 const MessagesError = {
   GET_DATA: 'Не удалось загрузить фотографии',
   SEND_DATA: 'Не удалось опубликовать фотографию',
 };
 
-const getData = (onSuccess, onFail) => {
+const getData = (onSuccess) => {
   fetch(`${URL}/data`)
     .then((response) => {
       if (!response.ok) {
@@ -16,7 +17,7 @@ const getData = (onSuccess, onFail) => {
       onSuccess(photos);
     })
     .catch(() => {
-      onFail();
+      showAlert(MessagesError.GET_DATA);
     });
 };
 

@@ -13,7 +13,7 @@ const commentsContainerNode = photoContainerNode.querySelector('.social__comment
 const commentsFragmentNode = document.createDocumentFragment();
 const commentItemNode = photoContainerNode.querySelector('.social__comment');
 
-const onPhotoEscKeydown = (evt) => {
+const onPhotoContainerEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     cancelPhotoContainer();
@@ -26,7 +26,7 @@ cancelPhotoButtonNode.addEventListener('click', () => cancelPhotoContainer());
 function cancelPhotoContainer() {
   photoContainerNode.classList.add('hidden');
   body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onPhotoEscKeydown);
+  document.removeEventListener('keydown', onPhotoContainerEscKeydown);
   commentsLoaderButtonNode.onclick = null;
 }
 
@@ -40,41 +40,38 @@ const renderComment = ({ avatar, name, message }) => {
   commentsFragmentNode.append(cloneCommentItemNode);
 };
 
-// отрисовка комментариев
-const renderComments = (comments, countClickLoadComments) => {
-  let countComment = 0;
-  const countLoadComments = countClickLoadComments * COUNT_ADDED_COMMENTS;
-  const countCommentsTotal = comments.length;
-  if (countCommentsTotal <= countLoadComments) {
-    commentsLoaderButtonNode.classList.add('hidden');
-  } else {
-    commentsLoaderButtonNode.classList.remove('hidden');
-  }
-  for (let i = 0; i < (countCommentsTotal <= countLoadComments ? countCommentsTotal : countLoadComments); i++) {
-    renderComment(comments[i]);
-    countComment++;
-  }
-  commentsCountNode.textContent = `${countComment} из ${countCommentsTotal} комментариев`;
-  commentsContainerNode.innerHTML = '';
-  commentsContainerNode.append(commentsFragmentNode);
-};
-
 // отрисовка полноэкранного изображения
 const renderFullSizePhoto = ({ url, likes, description, comments }) => {
-  let countClickLoadComments = 1;
+
+  let countComments = 0;
+
   photoContainerNode.classList.remove('hidden');
   body.classList.add('modal-open');
-
   photoImgNode.src = url;
   photoLikesNode.textContent = likes;
   photoDescriptionNode.textContent = description;
 
-  renderComments(comments, countClickLoadComments);
-  commentsLoaderButtonNode.onclick = () => {
-    countClickLoadComments++;
-    renderComments(comments, countClickLoadComments);
+  const renderComments = () => {
+    countComments += COUNT_ADDED_COMMENTS;
+    comments.slice(0, countComments).forEach((comment) => renderComment(comment));
+    commentsContainerNode.innerHTML = '';
+    commentsContainerNode.append(commentsFragmentNode);
+
+    if (countComments < comments.length) {
+      commentsLoaderButtonNode.classList.remove('hidden');
+      commentsCountNode.textContent = `${countComments} из ${comments.length} комментариев`;
+    } else {
+      commentsLoaderButtonNode.classList.add('hidden');
+      commentsCountNode.textContent = `${comments.length} из ${comments.length} комментариев`;
+    }
   };
-  document.addEventListener('keydown', onPhotoEscKeydown);
+
+  renderComments(comments, countComments);
+
+  commentsLoaderButtonNode.onclick = () => {
+    renderComments(comments, countComments);
+  };
+  document.addEventListener('keydown', onPhotoContainerEscKeydown);
 };
 
 export { renderFullSizePhoto };
