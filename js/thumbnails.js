@@ -1,5 +1,4 @@
 import { renderFullSizePhoto } from './photo-fullsize.js';
-
 const thumbnailsContainerNode = document.querySelector('.pictures');
 const thumbnailTemplateNode = document.querySelector('#picture').content.querySelector('.picture');
 const thumbnailFragmentNode = document.createDocumentFragment();

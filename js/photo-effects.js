@@ -66,7 +66,6 @@ const effectLevelValueNode = document.querySelector('.effect-level__value');
 const rangeSliderNode = document.querySelector('.effect-level__slider');
 const rangeSliderContainerNode = document.querySelector('.img-upload__effect-level');
 
-// создание слайдера
 noUiSlider.create(rangeSliderNode, {
   range: {
     min: 0,
@@ -77,7 +76,6 @@ noUiSlider.create(rangeSliderNode, {
   connect: 'lower',
 });
 
-// скрытие эффектов
 const resetEffects = () => {
   rangeSliderNode.setAttribute('disabled', true);
   rangeSliderContainerNode.classList.add('hidden');
@@ -86,26 +84,21 @@ const resetEffects = () => {
   effectLevelValueNode.value = '';
 };
 
-// смена эффектов
 const onEffectListChange = (evt) => {
-
   const selectedEffect = evt.target.value;
   if (selectedEffect === 'none') {
     resetEffects();
   } else {
-    // изменение настроек слайдера
     rangeSliderNode.removeAttribute('disabled');
     rangeSliderContainerNode.classList.remove('hidden');
     photoPreviewImageNode.className = 'img-upload__preview';
     photoPreviewImageNode.classList.add(`effects__preview--${selectedEffect}`);
     rangeSliderNode.noUiSlider.updateOptions(settingsEffects[selectedEffect].options);
   }
-
 };
 
 effectListNode.addEventListener('change', onEffectListChange);
 
-// изменение интенсивности эффекта
 rangeSliderNode.noUiSlider.on('update', () => {
 
   const valueRangeSlider = rangeSliderNode.noUiSlider.get();
