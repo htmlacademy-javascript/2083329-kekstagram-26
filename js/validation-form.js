@@ -1,11 +1,5 @@
+import { uploadPhotoFormNode, inputHashtagNode } from './upload-form.js';
 const MAX_COUNT_HASHTAGS = 5;
-const ErrorMessagesHashtags = {
-  INCORRECT: 'Некорректно введен хэш-тег',
-  NON_UNIQUE: 'Хэш-теги не должны повторяться',
-  OVER_COUNT: `Число хэш-тегов не должно превышать ${MAX_COUNT_HASHTAGS}`,
-};
-const uploadPhotoFormNode = document.querySelector('#upload-select-image');
-const inputHashtagNode = uploadPhotoFormNode.querySelector('.text__hashtags');
 
 const pristine = new Pristine(uploadPhotoFormNode, {
   classTo: 'img-upload__form',
@@ -30,9 +24,9 @@ const validateCountHashtags = (value) => {
   return arrayHashtags.length <= MAX_COUNT_HASHTAGS;
 };
 
-pristine.addValidator(inputHashtagNode, validateHashtags, ErrorMessagesHashtags.INCORRECT);
-pristine.addValidator(inputHashtagNode, validateUniqueHashtags, ErrorMessagesHashtags.NON_UNIQUE);
-pristine.addValidator(inputHashtagNode, validateCountHashtags, ErrorMessagesHashtags.OVER_COUNT);
+pristine.addValidator(inputHashtagNode, validateHashtags, 'Некорректно введен хэш-тег');
+pristine.addValidator(inputHashtagNode, validateUniqueHashtags, 'Хэш-теги не должны повторяться');
+pristine.addValidator(inputHashtagNode, validateCountHashtags, `Число хэш-тегов не должно превышать ${MAX_COUNT_HASHTAGS}`);
 
 const isValidForm = () => pristine.validate();
 

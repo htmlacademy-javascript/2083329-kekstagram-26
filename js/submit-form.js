@@ -1,27 +1,24 @@
 import { isEscapeKey } from './util.js';
 import { isValidForm } from './validation-form.js';
 import { sendData } from './api.js';
-import { cancelPhotoEditContainer, uploadPhotoFormNode, body } from './upload-form.js';
-
+import { cancelPhotoEditContainer, uploadPhotoFormNode } from './upload-form.js';
+const body = document.querySelector('body');
 const successContainerNode = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
 const successButtonNode = successContainerNode.querySelector('.success__button');
 const errorContainerNode = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
 const errorButtonNode = errorContainerNode.querySelector('.error__button');
 const submitButtonNode = document.querySelector('#upload-submit');
 
-// блокировка кнопки отправки
 const blockSubmitButton = () => {
   submitButtonNode.disabled = true;
   submitButtonNode.textContent = 'Публикую...';
 };
 
-// разблокировка кнопки отправки
 const unblockSubmitButton = () => {
   submitButtonNode.disabled = false;
   submitButtonNode.textContent = 'Опубликовать';
 };
 
-// обработчики закрытия окна об успешной отправке
 const onSuccessContainerEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
@@ -29,7 +26,7 @@ const onSuccessContainerEscKeydown = (evt) => {
   }
 };
 
-const onDocumentExceptSuccessContainerClick = (evt) => {
+const onOutSuccessContainerClick = (evt) => {
   if (evt.target === successContainerNode) {
     cancelSuccessMessage();
   }
@@ -37,22 +34,18 @@ const onDocumentExceptSuccessContainerClick = (evt) => {
 
 successButtonNode.addEventListener('click', () => cancelSuccessMessage());
 
-// функция закрытия окна об успешной отправке
 function cancelSuccessMessage() {
   successContainerNode.remove();
   document.removeEventListener('keydown', onSuccessContainerEscKeydown);
-  document.removeEventListener('click', onDocumentExceptSuccessContainerClick);
+  document.removeEventListener('click', onOutSuccessContainerClick);
 }
 
-// открытие окна об успешной отправке
 const showSuccessMessage = () => {
   body.append(successContainerNode);
   document.addEventListener('keydown', onSuccessContainerEscKeydown);
-  document.addEventListener('click', onDocumentExceptSuccessContainerClick);
+  document.addEventListener('click', onOutSuccessContainerClick);
 };
 
-
-// обработчики закрытия окна об ошибке при отправке формы
 const onErrorContainerEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
@@ -60,7 +53,7 @@ const onErrorContainerEscKeydown = (evt) => {
   }
 };
 
-const onDocumentExceptErrorContainerClick = (evt) => {
+const onOutErrorContainerClick = (evt) => {
   if (evt.target === errorContainerNode) {
     cancelErrorMessage();
   }
@@ -68,18 +61,16 @@ const onDocumentExceptErrorContainerClick = (evt) => {
 
 errorButtonNode.addEventListener('click', () => cancelErrorMessage());
 
-// закрытие окна об ошибке
 function cancelErrorMessage() {
   errorContainerNode.remove();
   document.removeEventListener('keydown', onErrorContainerEscKeydown);
-  document.removeEventListener('click', onDocumentExceptErrorContainerClick);
+  document.removeEventListener('click', onOutErrorContainerClick);
 }
 
-// открытие окна при ошибке
 const showErrorMessage = () => {
   body.append(errorContainerNode);
   document.addEventListener('keydown', onErrorContainerEscKeydown);
-  document.addEventListener('click', onDocumentExceptErrorContainerClick);
+  document.addEventListener('click', onOutErrorContainerClick);
 };
 
 const onSuccessSendForm = () => {

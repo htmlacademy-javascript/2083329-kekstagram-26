@@ -1,4 +1,3 @@
-
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const fileChooserNode = document.querySelector('#upload-file');
 const previewPhotoNode = document.querySelector('.img-upload__preview img');

@@ -5,8 +5,8 @@ const ScaleSettings = {
 };
 const photoPreviewImageNode = document.querySelector('.img-upload__preview img');
 const photoScaleControlNode = document.querySelector('.scale__control--value');
-const increaseScaleButton = document.querySelector('.scale__control--bigger');
-const decreaseScaleButton = document.querySelector('.scale__control--smaller');
+const increaseScaleButtonNode = document.querySelector('.scale__control--bigger');
+const decreaseScaleButtonNode = document.querySelector('.scale__control--smaller');
 
 const resetScaleValue = () => {
   photoScaleControlNode.value = `${ScaleSettings.MAX}%`;
@@ -30,7 +30,7 @@ const changeScaleValue = (increase) => {
 
 const onIncreaseScaleButtonClick = () => changeScaleValue(true);
 const onDecreaseScaleButtonClick = () => changeScaleValue(false);
-increaseScaleButton.addEventListener('click', onIncreaseScaleButtonClick);
-decreaseScaleButton.addEventListener('click', onDecreaseScaleButtonClick);
+increaseScaleButtonNode.addEventListener('click', onIncreaseScaleButtonClick);
+decreaseScaleButtonNode.addEventListener('click', onDecreaseScaleButtonClick);
 
 export { resetScaleValue };

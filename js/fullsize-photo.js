@@ -1,5 +1,4 @@
 import { isEscapeKey } from './util.js';
-
 const COUNT_ADDED_COMMENTS = 5;
 const body = document.querySelector('body');
 const photoContainerNode = document.querySelector('.big-picture');
@@ -22,7 +21,6 @@ const onPhotoContainerEscKeydown = (evt) => {
 
 cancelPhotoButtonNode.addEventListener('click', () => cancelPhotoContainer());
 
-// закрытие формы полноэкранного изображения
 function cancelPhotoContainer() {
   photoContainerNode.classList.add('hidden');
   body.classList.remove('modal-open');
@@ -30,7 +28,6 @@ function cancelPhotoContainer() {
   commentsLoaderButtonNode.onclick = null;
 }
 
-// отрисовка отдельного комментария
 const renderComment = ({ avatar, name, message }) => {
   const cloneCommentItemNode = commentItemNode.cloneNode(true);
   const cloneCommentAvatarNode = cloneCommentItemNode.querySelector('img');
@@ -40,7 +37,6 @@ const renderComment = ({ avatar, name, message }) => {
   commentsFragmentNode.append(cloneCommentItemNode);
 };
 
-// отрисовка полноэкранного изображения
 const renderFullSizePhoto = ({ url, likes, description, comments }) => {
 
   let countComments = 0;
@@ -67,7 +63,7 @@ const renderFullSizePhoto = ({ url, likes, description, comments }) => {
   };
 
   renderComments(comments, countComments);
-
+  // при добавлении обработчика использован onclick, для возможности удаления этого обработчика
   commentsLoaderButtonNode.onclick = () => {
     renderComments(comments, countComments);
   };
