@@ -1,7 +1,7 @@
 import { isEscapeKey } from './util.js';
-import { resetScaleValue } from './photo-scale.js';
-import { resetEffects } from './photo-effects.js';
-import { showPhotoPreview, fileChooserNode } from './photo-preview.js';
+import { resetScaleValue } from './scale.js';
+import { resetEffects } from './effects.js';
+import { showPhotoPreview, fileChooserNode } from './preview-photo.js';
 const body = document.querySelector('body');
 const photoEditContainerNode = document.querySelector('.img-upload__overlay');
 const cancelPhotoButtonNode = photoEditContainerNode.querySelector('#upload-cancel');
@@ -44,4 +44,4 @@ const onFocusInputEscKeydown = (evt) => {
 inputHashtagNode.addEventListener('keydown', onFocusInputEscKeydown);
 inputCommentNode.addEventListener('keydown', onFocusInputEscKeydown);
 
-export { cancelPhotoEditContainer, uploadPhotoFormNode, body};
+export { cancelPhotoEditContainer, uploadPhotoFormNode, inputHashtagNode };

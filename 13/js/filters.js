@@ -10,13 +10,15 @@ const filtersListeners = {
   'filter-discussed': (photos) => (photos.slice().sort((photo1, photo2) => (photo2.comments.length - photo1.comments.length))),
 };
 
+const debouncedFilter = debounce((idButton, photos) => renderThumbanails(filtersListeners[idButton](photos)), RERENDER_DELAY);
+
 const initFilters = (photos) => {
   filtersContainerNode.classList.remove('img-filters--inactive');
   filtersButtonsNode.forEach((buttonNode) => {
     buttonNode.addEventListener('click', (evt) => {
       filtersContainerNode.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
       evt.target.classList.add('img-filters__button--active');
-      debounce(() => renderThumbanails(filtersListeners[evt.target.id](photos)), RERENDER_DELAY)();
+      debouncedFilter(evt.target.id, photos);
     });
   });
 };
