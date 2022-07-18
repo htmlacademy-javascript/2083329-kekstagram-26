@@ -1,7 +1,8 @@
 import { isEscapeKey } from './util.js';
 import { isValidForm } from './validation-form.js';
 import { sendData } from './api.js';
-import { cancelPhotoEditContainer, uploadPhotoFormNode, body } from './upload-form.js';
+import { cancelPhotoEditContainer, uploadPhotoFormNode } from './upload-form.js';
+const body = document.querySelector('body');
 const successContainerNode = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
 const successButtonNode = successContainerNode.querySelector('.success__button');
 const errorContainerNode = document.querySelector('#error').content.querySelector('.error').cloneNode(true);

@@ -63,7 +63,7 @@ const renderFullSizePhoto = ({ url, likes, description, comments }) => {
   };
 
   renderComments(comments, countComments);
-
+  // при добавлении обработчика использован onclick, для возможности удаления этого обработчика
   commentsLoaderButtonNode.onclick = () => {
     renderComments(comments, countComments);
   };
