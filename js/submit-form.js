@@ -14,7 +14,7 @@ const blockSubmitButton = () => {
   submitButtonNode.textContent = 'Публикую...';
 };
 
-const unblockSubmitButton = () => {
+const unlockSubmitButton = () => {
   submitButtonNode.disabled = false;
   submitButtonNode.textContent = 'Опубликовать';
 };
@@ -73,23 +73,21 @@ const showErrorMessage = () => {
   document.addEventListener('click', onOutErrorContainerClick);
 };
 
-const onSuccessSendForm = () => {
-  cancelPhotoEditContainer();
-  showSuccessMessage();
-  unblockSubmitButton();
-};
-
-const onFailSendForm = () => {
-  showErrorMessage();
-  unblockSubmitButton();
-};
-
 const setUploadFormSubmit = () => {
   uploadPhotoFormNode.addEventListener('submit', (evt) => {
     evt.preventDefault();
     if (isValidForm()) {
       blockSubmitButton();
-      sendData(onSuccessSendForm, onFailSendForm, new FormData(evt.target));
+      sendData(() => {
+        cancelPhotoEditContainer();
+        showSuccessMessage();
+        unlockSubmitButton();
+      },
+      () => {
+        showErrorMessage();
+        unlockSubmitButton();
+      },
+      new FormData(evt.target));
     }
   });
 };

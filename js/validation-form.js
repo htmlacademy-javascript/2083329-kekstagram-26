@@ -28,6 +28,6 @@ pristine.addValidator(inputHashtagNode, validateHashtags, 'Некорректн�
 pristine.addValidator(inputHashtagNode, validateUniqueHashtags, 'Хэш-теги не должны повторяться');
 pristine.addValidator(inputHashtagNode, validateCountHashtags, `Число хэш-тегов не должно превышать ${MAX_COUNT_HASHTAGS}`);
 
-const isValidForm = () => pristine.validate();
+const isValidForm = () => pristine.validate(inputHashtagNode);
 
 export { isValidForm };
